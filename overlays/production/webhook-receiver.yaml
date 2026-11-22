@@ -1,0 +1,36 @@
+# Stand-in for the external chat service: an echo server that logs every request body.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webhook-receiver-dep
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: webhook-receiver
+  template:
+    metadata:
+      labels:
+        app: webhook-receiver
+    spec:
+      containers:
+        - name: webhook-receiver
+          image: mendhak/http-https-echo:37
+          env:
+            - name: HTTP_PORT
+              value: "8080"
+            - name: LOG_IGNORE_PATH
+              value: /healthz
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: webhook-receiver-svc
+spec:
+  type: ClusterIP
+  selector:
+    app: webhook-receiver
+  ports:
+    - port: 2345
+      protocol: TCP
+      targetPort: 8080

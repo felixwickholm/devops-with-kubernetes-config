@@ -1,0 +1,8 @@
+# Everything the project needs, without a namespace. The overlays set the namespace and the differences.
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - ../apps/todo-app
+  - ../apps/todo-backend
+  - ../apps/broadcaster
+  - ../apps/todo-cronjob

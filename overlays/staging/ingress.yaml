@@ -1,0 +1,4 @@
+# Staging answers at http://staging.localhost:8081
+- op: add
+  path: /spec/rules/0/host
+  value: staging.localhost

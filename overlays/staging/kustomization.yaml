@@ -1,0 +1,23 @@
+# Staging: deployed from every commit to main.
+# The broadcaster only logs the messages, and the database is not backed up.
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: staging
+resources:
+  - ../../base
+patches:
+  - path: broadcaster-config.yaml
+  - path: backend-config.yaml
+  - path: ingress.yaml
+    target:
+      kind: Ingress
+      name: todo-app-ingress
+images:
+  - name: felixwickholm/todo-app
+    newTag: "4.8"
+  - name: felixwickholm/todo-backend
+    newTag: "4.6"
+  - name: felixwickholm/broadcaster
+    newTag: "4.6"
+  - name: felixwickholm/todo-cronjob
+    newTag: "2.9"

@@ -1,0 +1,8 @@
+# No WEBHOOK_URL: the broadcaster only logs the messages.
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: broadcaster-config
+data:
+  NATS_SUBJECT: todos-staging
+  WEBHOOK_URL: ""

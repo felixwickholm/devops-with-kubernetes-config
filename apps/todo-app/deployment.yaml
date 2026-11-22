@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: todo-app-dep
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: todo-app
+  template:
+    metadata:
+      labels:
+        app: todo-app
+    spec:
+      volumes:
+        - name: image-cache
+          persistentVolumeClaim:
+            claimName: image-cache-claim
+      containers:
+        - name: todo-app
+          image: felixwickholm/todo-app:4.5
+          readinessProbe:
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            httpGet:
+              path: /readyz
+              port: 3001
+          livenessProbe:
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            failureThreshold: 2
+            httpGet:
+              path: /healthz
+              port: 3001
+          envFrom:
+            - configMapRef:
+                name: todo-app-config
+          volumeMounts:
+            - name: image-cache
+              mountPath: /usr/src/app/files
