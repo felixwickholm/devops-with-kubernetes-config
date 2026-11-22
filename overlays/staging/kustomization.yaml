@@ -21,3 +21,7 @@ images:
     newTag: "4.6"
   - name: felixwickholm/todo-cronjob
     newTag: "2.9"
+# Staging needs fewer broadcasters than production.
+replicas:
+  - name: broadcaster-dep
+    count: 2
